@@ -1,0 +1,73 @@
+name: Website checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Structure, browser and package
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out website
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Check structure and JavaScript
+        run: |
+          python3 scripts/check.py
+          node --check app.js
+          node --check scripts/browser-check.mjs
+
+      - name: Find preinstalled browser
+        shell: bash
+        run: |
+          set -euo pipefail
+          browser=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
+          "$browser" --version
+          printf 'CHROME_BIN=%s\n' "$browser" >> "$GITHUB_ENV"
+
+      - name: Check browser behavior and responsive layouts
+        run: node scripts/browser-check.mjs
+
+      - name: Package website for review
+        run: python3 scripts/package.py
+
+      - name: Save review screenshots
+        if: ${{ always() && !cancelled() }}
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: website-screenshots
+          path: docs/*.png
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Save website package
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: velunori-dusk-website
+          path: dist/velunori-dusk-website.zip
+          if-no-files-found: error
+          retention-days: 14
