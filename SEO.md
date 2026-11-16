@@ -1,15 +1,15 @@
 # Velunori search and social metadata
 
-Prepared for `https://velunori.github.io/`. The website is still local and unpublished; no search-console registration, crawl/index request, domain change or public deployment has been performed.
+Prepared for `https://velunori.github.io/`. Publication is verified separately from these source checks. Metadata checks do not establish search-console ownership, indexing or search ranking.
 
 ## Included
 
-- Unique English titles and descriptions for the homepage and installation guide.
-- Canonical URLs: homepage `/` and `/guide.html`; component-selection query variants keep the same canonical page.
+- Unique English titles and descriptions for the homepage, installation guide, privacy policy and terms.
+- Canonical URLs: homepage `/`, `/guide.html`, `/privacy.html` and `/terms.html`; component-selection query variants keep the same canonical page.
 - Explicit indexing/large-preview metadata for public pages, with `noindex` on the custom 404 page.
 - Open Graph and Twitter large-image metadata, absolute URLs and descriptive image alternatives.
 - A real 1200×630 PNG share card rendered from the project's HTML, logo and Dusk wallpaper; `scripts/social-card.html` is its editable source.
-- Structured JSON-LD: Organization, WebSite and SoftwareApplication on the homepage; TechArticle and BreadcrumbList on the guide. No fabricated reviews, ratings or unsupported publication dates.
+- Structured JSON-LD: Organization, WebSite and SoftwareApplication on the homepage; TechArticle and BreadcrumbList on the guide; WebPage and BreadcrumbList on the policy pages. No fabricated reviews, ratings or unsupported publication dates.
 - An XML sitemap with actual content update dates and canonical HTML URLs only. Downloads, utility scripts and review screenshots are not submitted as content pages.
 - `robots.txt`, SVG/PNG favicons, Apple touch icon and a browser-mode web manifest. No service worker, PWA/offline claim, analytics or third-party runtime request is added.
 - Readable static content, descriptive headings/links, image alternatives, responsive layouts and no-JavaScript fallback remain intact.

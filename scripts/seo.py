@@ -31,7 +31,7 @@ class Head(HTMLParser):
 
 def check_seo(root):
     root=Path(root);titles=set();descriptions=set();canonicals=[]
-    for name,pathpart in [('index.html','/'),('guide.html','/guide.html')]:
+    for name,pathpart in [('index.html','/'),('guide.html','/guide.html'),('privacy.html','/privacy.html'),('terms.html','/terms.html')]:
         parsed=Head();text=(root/name).read_text();parsed.feed(text)
         canonical=BASE+pathpart;canonicals.append(canonical)
         assert parsed.links.get('canonical')==[canonical],(name,'canonical')
@@ -53,7 +53,7 @@ def check_seo(root):
         assert graph['@context']=='https://schema.org'
         types={node['@type'] for node in graph['@graph']}
         assert {'Organization','WebSite'}<=types
-        assert ('SoftwareApplication' in types) if name=='index.html' else {'TechArticle','BreadcrumbList'}<=types
+        assert ('SoftwareApplication' in types) if name=='index.html' else {('TechArticle' if name=='guide.html' else 'WebPage'),'BreadcrumbList'}<=types
         assert 'aggregateRating' not in json.dumps(graph), 'Do not invent ratings.'
         assert 'https://revolut.me/szalikdev' in text
     image=(root/'assets/social-card.png').read_bytes()

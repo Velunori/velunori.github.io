@@ -176,6 +176,14 @@ try {
   await click('[data-install-mode="all"]');
   assert.equal(await evaluate("document.querySelectorAll('[name=component]:checked').length"), 9);
   await noOverflow('desktop guide'); await screenshot('guide-desktop.png');
+  for (const [path, heading] of [['privacy.html', 'Privacy policy'], ['terms.html', 'Terms of use']]) {
+    await navigate(base + '/' + path);
+    assert.equal(await evaluate('document.querySelector("h1").textContent'), heading);
+    assert(await evaluate(`document.querySelector('.site-footer a[href="privacy.html"]') !== null`));
+    assert(await evaluate(`document.querySelector('.site-footer a[href="terms.html"]') !== null`));
+    await noOverflow('desktop ' + path);
+    await screenshot(path.replace('.html', '-desktop.png'));
+  }
   await navigate(base + '/?components=control-center&cloud=1');
   assert.equal(await evaluate("document.querySelectorAll('[name=component]:checked').length"), 1);
   assert.equal(await evaluate("document.querySelector('[name=cloud]').checked"), false);
@@ -192,6 +200,10 @@ try {
       await screenshot('home-mobile.png');
     }
     await navigate(base + '/guide.html'); await noOverflow(`${width}px guide`);
+    for (const path of ['privacy.html', 'terms.html']) {
+      await navigate(base + '/' + path); await noOverflow(`${width}px ${path}`);
+      if (width === 390) await screenshot(path.replace('.html', '-mobile.png'));
+    }
   }
   await navigate(base + '/404.html'); await noOverflow('404 page');
   assert.equal(await evaluate('document.querySelector("h1").textContent'), 'A little offthe path.');

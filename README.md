@@ -18,6 +18,7 @@ Open `http://127.0.0.1:8080/`. Stop the server with Ctrl+C. No dependencies or b
 
 - `index.html`: full Dusk landing page, interactive bar illustration, eight screenshot views, nine-component overview, installation configurator, FAQ and community links.
 - `guide.html`: requirements, installation, first steps, calendars, updates, recovery, troubleshooting and support.
+- `privacy.html` and `terms.html`: public-facing privacy and terms pages for the desktop suite and website, including Google calendar access, local storage, disconnection and deletion. Link these URLs in Google OAuth Branding after publishing the repository.
 - `404.html`: custom error page.
 - `styles.css` and `app.js`: responsive styles and progressive enhancements. Native buttons, keyboard-operated gallery tabs, a modal image viewer, reduced-motion support, a mobile navigation menu and copy controls.
 - `assets/`: the existing prism mark, Dusk wallpaper and all product screenshots, stored locally. See `ASSETS.md`.

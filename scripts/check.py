@@ -69,7 +69,7 @@ for asset in re.findall(r'url\([\'"]?([^\)\'\"]+)', (ROOT / 'styles.css').read_t
     assert not asset.startswith(('http:', 'https:')), 'Unexpected external CSS asset'
     assert (ROOT / asset).is_file(), asset
 
-for path in [ROOT / 'index.html', ROOT / 'guide.html']:
+for path in [ROOT / name for name in ['index.html', 'guide.html', 'privacy.html', 'terms.html']]:
     html = path.read_text()
     assert 'rel="canonical"' in html and 'property="og:image"' in html and 'name="description"' in html, path
     for resource in re.findall(r'(?:src|href)="(https?://[^\"]+)"', html):
@@ -78,6 +78,10 @@ for path in [ROOT / 'index.html', ROOT / 'guide.html']:
         assert not re.search(r'<link[^>]+href="https?://[^\"]+"[^>]*rel="stylesheet"', html)
 
 ET.parse(ROOT / 'sitemap.xml')
+for name in ['index.html', 'guide.html', 'privacy.html', 'terms.html']:
+    text = (ROOT / name).read_text()
+    footer = text.split('<footer', 1)[1]
+    assert 'href="privacy.html"' in footer and 'href="terms.html"' in footer, (name, 'missing policy navigation')
 assert (ROOT / '.nojekyll').is_file()
 components = ['bar', 'clock', 'control-center', 'notifications', 'menu', 'weather', 'update', 'lockscreen', 'theme']
 html = (ROOT / 'index.html').read_text()
