@@ -166,7 +166,7 @@ try {
   await navigate(base + '/guide.html');
   assert.equal(await evaluate("document.querySelector('[value=clock]').checked"), true);
   assert.equal(await evaluate("document.querySelector('[name=cloud]').checked"), true);
-  assert((await evaluate("document.getElementById('update-code').textContent")).includes('installer.sh status'));
+  assert((await evaluate("document.getElementById('update-code').textContent")).includes('update --components clock'));
   await click('[value="clock"]'); await click('[value="control-center"]'); await click('[value="theme"]');
   assert.equal(await evaluate("document.getElementById('library-summary').hidden"), true);
   assert.equal(await evaluate("document.querySelector('[name=cloud]').disabled"), true);
